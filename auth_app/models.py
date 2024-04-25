@@ -62,4 +62,11 @@ class User(AbstractBaseUser,PermissionsMixin):
     
     def get_absolute_url(self):
         return "/core/%i/" % (self.pk)
-    
+    def is_admin(self):
+        return self.role == self.ADMIN
+    def is_student(self):
+        return self.role == self.STUDENT
+    def is_faculty(self):
+        return self.role == self.FACULTY
+    def is_moderator(self):
+        return self.role == self.MODERATOR

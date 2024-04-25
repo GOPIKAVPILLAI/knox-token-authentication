@@ -14,3 +14,15 @@ urlpatterns = [
     
 ]
 """
+
+"""
+    NOTE : 
+
+    TODO :
+         
+    COMMENT : 
+"""
+
+# USER DETAILS
+
+# 

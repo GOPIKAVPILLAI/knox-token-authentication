@@ -12,8 +12,9 @@ from .serializers import CreateUserSerializer, UpdateUserSerializer,UserSerializ
 from knox import views as knox_views
 from django.contrib.auth import login,authenticate
 from rest_framework import permissions
-from knox.auth import AuthToken
+from django.http import HttpResponse
 from knox.auth import TokenAuthentication
+from auth_app.models import User
 
 
 class CreateUserAPI(CreateAPIView):
@@ -26,8 +27,9 @@ class ViewUserAPI(RetrieveAPIView):
     serializer_class = UserSerializer
 
 class UpdateUserAPI(UpdateAPIView):
-    queryset = User.objects.all()
-    serializer_class = UpdateUserSerializer
+    
+        queryset = User.objects.all()
+        serializer_class = UpdateUserSerializer
 
 
 class LoginView(KnoxLoginView):
@@ -42,9 +44,18 @@ class LoginView(KnoxLoginView):
         # _,token=AuthToken.objects.create(user)
         login(request, user)
         return super(LoginView, self).post(request, format=None)    
-        # return Response({'user_info': {
-        #     'email':user.email,
-        #     'token':token,
 
-        # }})
-    
+def my_view(request):
+    # Assuming user is authenticated and you have access to request.user
+    t=()
+    user,t= TokenAuthentication().authenticate(request)
+    print(user)
+
+    if user and user.is_admin():
+        # User is authenticated and is an admin
+        # Your admin-specific logic here
+        return HttpResponse("You are an admin!")
+    else:
+        # User is not an admin or not authenticated
+        # Your non-admin logic here
+        return HttpResponse("You are not an admin!")
